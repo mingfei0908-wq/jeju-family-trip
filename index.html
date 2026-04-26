@@ -141,6 +141,14 @@
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 900;
+      padding: 10px 0;
+      background: rgba(251, 252, 251, .94);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
+      box-shadow: 0 8px 18px rgba(24, 43, 48, .06);
     }
 
     .tabs, .actions { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -504,7 +512,11 @@
       }
 
       .topbar {
+        top: 0;
+        margin: 0 -10px;
+        padding: 8px 10px 9px;
         align-items: stretch;
+        gap: 7px;
       }
 
       .tabs,
@@ -512,12 +524,34 @@
         width: 100%;
       }
 
+      .tabs {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 6px;
+      }
+
+      .actions {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 6px;
+      }
+
       .tabs button,
       .actions button {
-        flex: 1 1 calc(50% - 6px);
         justify-content: center;
-        padding: 0 8px;
-        min-height: 38px;
+        padding: 0 6px;
+        min-height: 36px;
+        font-size: 14px;
+      }
+
+      .tabs button {
+        min-height: 44px;
+        font-size: 18px;
+        font-weight: 800;
+      }
+
+      .actions button {
+        font-size: 12px;
       }
 
       .day-summary {
@@ -578,9 +612,8 @@
         font-size: 29px;
       }
 
-      .tabs button,
-      .actions button {
-        flex-basis: 100%;
+      .actions {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .flight-code,
@@ -824,7 +857,11 @@
         const btn = document.createElement("button");
         btn.textContent = day.label;
         btn.className = day.id === current ? "active" : "";
-        btn.onclick = () => { current = day.id; render(); };
+        btn.onclick = () => {
+          current = day.id;
+          render();
+          document.querySelector(".day-summary").scrollIntoView({ behavior: "smooth", block: "start" });
+        };
         tabs.appendChild(btn);
       });
     }
